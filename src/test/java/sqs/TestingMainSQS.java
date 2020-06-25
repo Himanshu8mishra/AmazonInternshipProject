@@ -4,19 +4,19 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class TestingMainSQS extends getNewSQSExample
+public class TestingMainSQS extends getNewObject
 {
     @BeforeAll
     public static void setUp()
     {
         System.out.println("\nInitial Test");
-        instanceSQSExample = new SQSExampleMock();
+        sqsObject = new mockSQSOperations();
     }
     @AfterAll
     public static void tearDown()
     {
         System.out.println("\nFinal Test");
-        instanceSQSExample = null;
+        sqsObject = null;
     }
     @Test
     public void testingCreateStandardQueue()

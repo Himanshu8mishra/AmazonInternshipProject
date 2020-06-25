@@ -9,7 +9,7 @@ With Lambda as a target for SQS event source, it fully supports reading and dele
 
 - **SQS Package**
 
-**SQSExample.java -** Contains method performing basic operations related to SQS
+**SQSOperations.java -** Contains method performing basic operations related to SQS
 ```java
 public void createStandardQueue(String queueName)
 public void listQueues()
@@ -20,28 +20,40 @@ public void purgeQueue(String queueName)
 public void deleteQueue(String queueName)
 ```
 
-**Create_Standard_Queue.java -** calls method *SQSExample::createStandardQueue()*
+**Create_Standard_Queue.java -** calls method *SQSOperations::createStandardQueue()*
 
 It takes following variables as command line arguments: ```queueName```
 
-**List_Queues.java -** calls method *SQSExample::listQueues()*
+**List_Queues.java -** calls method *SQSOperations::listQueues()*
 
-**Configure_Queue.java -** calls method *SQSExample::configureQueue()*
+**Configure_Queue.java -** calls method *SQSOperations::configureQueue()*
 
 It takes following variables as command line arguments: ```queueName, visibilityTimeout, pollTime```
 
-**Send_Message.java -** calls method *SQSExample::sendMessage()*
+**Send_Message.java -** calls method *SQSOperations::sendMessage()*
 
 It takes following variables as command line arguments: ```queueName, message```
 
-**Receive_Messages.java -** calls method *SQSExample::receiveMessage()*
+**Receive_Messages.java -** calls method *SQSOperations::receiveMessage()*
 
 It takes following variables as command line arguments: ```queueName, maxMessages, waitTime```
 
-**Purge_Queue.java -** calls method *SQSExample::purgeQueue()*
+**Purge_Queue.java -** calls method *SQSOperations::purgeQueue()*
 
 It takes following variables as command line arguments: ```queueName```
 
-**Delete_Queue.java -** calls method *SQSExample::deleteQueue()*
+**Delete_Queue.java -** calls method *SQSOperations::deleteQueue()*
 
 It takes following variables as command line arguments: ```queueName```
+
+**getNewObject.java** Contains methods that return objects of different classes and while testing returns object of mock classes
+```java
+static SQSOperations newSqsObject()
+```
+
+## Setup
+
+1. Clone or download project files in your local machine.
+2. Open your project in your preferred editor (recommended Intellij) as a maven project. You can search online for exact procedure according to your editor.
+3. Build your project using following command ```mvn package```. For more details [click here](https://maven.apache.org/users/index.html "click here")
+4. Make sure to update your aws credential files.  [Click Here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html "Click Here") You can do that from your editor as well if you have installed AWS toolkit for your editor.

@@ -1,6 +1,6 @@
 package sqs;
 
-//Calls Method SQSExample::listQueues()
+//Calls Method SQSOperations::listQueues()
 //Lists URL of all the queues
 public class List_Queues
 {
@@ -8,11 +8,11 @@ public class List_Queues
     {
         try
         {
-            //Initializing testObject by calling another function
-            //which returns reference of an object of class SQSExample
-            SQSExample testObject = getNewSQSExample.newSQSExample();
+            //Initializing sqsObject by calling another function
+            //which returns reference of an object of class SQSOperations
+            SQSOperations sqsObject = getNewObject.newSqsObject();
 
-            testObject.listQueues();
+            sqsObject.listQueues();
         }
         catch (Exception e)
         {

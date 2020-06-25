@@ -1,6 +1,6 @@
 package sqs;
 
-//Calls Method SQSExample::receiveMessage()
+//Calls Method SQSOperations::receiveMessage()
 //Retrieves messages from the queue
 public class Receive_Messages
 {
@@ -8,15 +8,15 @@ public class Receive_Messages
     {
         try
         {
-            //Initializing testObject by calling another function
-            //which returns reference of an object of class SQSExample
-            SQSExample testObject = getNewSQSExample.newSQSExample();
+            //Initializing sqsObject by calling another function
+            //which returns reference of an object of class SQSOperations
+            SQSOperations sqsObject = getNewObject.newSqsObject();
 
             String queueName = args[0];
             int maxMessages = Integer.parseInt(args[1]);
             int waitTime = Integer.parseInt(args[2]);
 
-            testObject.receiveMessage(queueName,maxMessages,waitTime);
+            sqsObject.receiveMessage(queueName,maxMessages,waitTime);
         }
         catch (Exception e)
         {

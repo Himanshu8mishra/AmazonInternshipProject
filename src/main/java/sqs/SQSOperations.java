@@ -5,11 +5,11 @@ import software.amazon.awssdk.services.sqs.model.*;
 import java.util.*;
 
 //Contains methods for all the basic operations related to AWS SQS
-public class SQSExample
+public class SQSOperations
 {
     private static SqsClient sqsClient;
 
-    SQSExample()
+    SQSOperations()
     {
         sqsClient = SqsClient.builder().build();
     }

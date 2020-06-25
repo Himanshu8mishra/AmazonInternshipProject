@@ -1,6 +1,6 @@
 package sqs;
 
-//Calls Method SQSExample::deleteQueue()
+//Calls Method SQSOperations::deleteQueue()
 //Deletes the specified queue
 public class Delete_Queue
 {
@@ -8,13 +8,13 @@ public class Delete_Queue
     {
         try
         {
-            //Initializing testObject by calling another function
-            //which returns reference of an object of class SQSExample
-            SQSExample testObject = getNewSQSExample.newSQSExample();
+            //Initializing sqsObject by calling another function
+            //which returns reference of an object of class SQSOperations
+            SQSOperations sqsObject = getNewObject.newSqsObject();
 
             String queueName = args[0];
 
-            testObject.deleteQueue(queueName);
+            sqsObject.deleteQueue(queueName);
         }
         catch (Exception e)
         {

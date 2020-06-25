@@ -1,6 +1,6 @@
 package sqs;
 
-//Calls Method SQSExample::sendMessage()
+//Calls Method SQSOperations::sendMessage()
 //Sends the message to the queue
 public class Send_Message
 {
@@ -8,14 +8,14 @@ public class Send_Message
     {
         try
         {
-            //Initializing testObject by calling another function
-            //which returns reference of an object of class SQSExample
-            SQSExample testObject = getNewSQSExample.newSQSExample();
+            //Initializing sqsObject by calling another function
+            //which returns reference of an object of class SQSOperations
+            SQSOperations sqsObject = getNewObject.newSqsObject();
 
             String queueName = args[0];
             String message = args[1];
 
-            testObject.sendMessage(queueName,message);
+            sqsObject.sendMessage(queueName,message);
         }
         catch (Exception e)
         {

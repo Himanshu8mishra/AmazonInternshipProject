@@ -5,11 +5,11 @@ import software.amazon.awssdk.services.sqs.SqsClient;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-//Testing all the methods of class SQSExample
+//Testing all the methods of class SQSOperations
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class SQSExampleTest
+class testingSQSOperations
 {
-    private static final SQSExample unitTestObject = new SQSExample();
+    private static final SQSOperations unitTestObject = new SQSOperations();
     private static final String queueName = "unitTestQueue";
 
     @BeforeAll

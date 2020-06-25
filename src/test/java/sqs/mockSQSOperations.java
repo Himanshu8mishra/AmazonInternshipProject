@@ -1,7 +1,7 @@
 package sqs;
 
-//Mock class of SQSExample
-public class SQSExampleMock extends SQSExample
+//Mock class of SQSOperations
+public class mockSQSOperations extends SQSOperations
 {
     @Override
     public void createStandardQueue(String queueName)

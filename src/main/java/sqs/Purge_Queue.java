@@ -1,6 +1,6 @@
 package sqs;
 
-//Calls Method SQSExample::purgeQueues()
+//Calls Method SQSOperations::purgeQueue()
 //Deletes all the messages in the queue
 public class Purge_Queue
 {
@@ -8,13 +8,13 @@ public class Purge_Queue
     {
         try
         {
-            //Initializing testObject by calling another function
-            //which returns reference of an object of class SQSExample
-            SQSExample testObject = getNewSQSExample.newSQSExample();
+            //Initializing sqsObject by calling another function
+            //which returns reference of an object of class SQSOperations
+            SQSOperations sqsObject = getNewObject.newSqsObject();
 
             String queueName = args[0];
 
-            testObject.purgeQueue(queueName);
+            sqsObject.purgeQueue(queueName);
         }
         catch (Exception e)
         {

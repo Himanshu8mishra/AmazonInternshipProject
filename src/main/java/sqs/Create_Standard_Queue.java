@@ -1,6 +1,6 @@
 package sqs;
 
-//Calls Method SQSExample::createStandardQueue()
+//Calls Method SQSOperations::createStandardQueue()
 //Creates new standard queue
 public class Create_Standard_Queue
 {
@@ -8,13 +8,13 @@ public class Create_Standard_Queue
     {
         try
         {
-            //Initializing testObject by calling another function
-            //which returns reference of an object of class SQSExample
-            SQSExample testObject = getNewSQSExample.newSQSExample();
+            //Initializing sqsObject by calling another function
+            //which returns reference of an object of class SQSOperations
+            SQSOperations sqsObject = getNewObject.newSqsObject();
 
             String queueName = args[0];
 
-            testObject.createStandardQueue(queueName);
+            sqsObject.createStandardQueue(queueName);
         }
         catch (Exception e)
         {
