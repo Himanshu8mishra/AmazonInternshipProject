@@ -6,17 +6,16 @@ import software.amazon.awssdk.services.lambda.model.*;
 import java.util.*;
 
 //Contains methods for all the basic operations related to AWS Lambda
-public class LambdaExample
+public class LambdaOperations
 {
     private static LambdaClient lambdaClient;
 
-    LambdaExample()
+    LambdaOperations()
     {
         lambdaClient = LambdaClient.builder().build();
     }
 
     //Returns a reference of your deployment package stored in s3 bucket
-    //Should be less than 20MB
     public FunctionCode getFunctionCode(String bucketName, String key)
     {
         return FunctionCode.builder()
@@ -52,7 +51,7 @@ public class LambdaExample
             "{\n"+
             "\"messageId\": \"19dd0b57-b21e-4ac1-bd88-01bbb068cb78\",\n"+
             "\"receiptHandle\": \"MessageReceiptHandle\",\n"+
-            "\"body\": \"Hello from SQS!\",\n"+
+            "\"body\": \"{ \\\"IP\\\":\\\"34.207.64.196\\\",\\\"port\\\":\\\"80\\\",\\\"message\\\":\\\"testMessage\\\",\\\"count\\\":\\\"99\\\"}\",\n"+
             "\"attributes\": {\n"+
             "\"ApproximateReceiveCount\": \"1\",\n"+
             "\"SentTimestamp\": \"1523232000000\",\n"+
@@ -77,7 +76,7 @@ public class LambdaExample
         return (response.payload().asUtf8String());
     }
 
-    public void addTrigger(String functionName, String sourceArn, boolean enableTrigger, int batchSize)
+    public String addTrigger(String functionName, String sourceArn, boolean enableTrigger, int batchSize)
     {
         System.out.println("\nAdding Trigger");
 
@@ -91,9 +90,9 @@ public class LambdaExample
 
         CreateEventSourceMappingResponse createEventSourceMappingResponse =
                 lambdaClient.createEventSourceMapping(createEventSourceMappingRequest);
-        System.out.println(createEventSourceMappingResponse.uuid());
 
         System.out.println("Trigger Added");
+        return (createEventSourceMappingResponse.uuid());
     }
 
     public void listFunctions()

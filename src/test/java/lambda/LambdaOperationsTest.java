@@ -2,21 +2,23 @@ package lambda;
 
 import org.junit.jupiter.api.*;
 import software.amazon.awssdk.services.lambda.LambdaClient;
+import software.amazon.awssdk.services.lambda.model.DeleteEventSourceMappingRequest;
 import software.amazon.awssdk.services.lambda.model.FunctionCode;
 import static org.junit.jupiter.api.Assertions.*;
 
-//Testing all the methods of class LambdaExample
+//Testing all the methods of class LambdaOperations
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class LambdaExampleTest
+class LambdaOperationsTest
 {
-    private static final LambdaExample unitTestObject = new LambdaExample();
+    private static final LambdaOperations unitTestObject = new LambdaOperations();
     private static final String functionName = "unitTestFunction";
     private static FunctionCode functionCode;
+    private static LambdaClient lambdaClient;
 
     @BeforeAll
     public static void setUp()
     {
-        LambdaClient lambdaClient = LambdaClient.builder().build();
+        lambdaClient = LambdaClient.builder().build();
         assertNotNull(lambdaClient);
 
         System.out.println("\nInitial Test Passed");
@@ -64,7 +66,8 @@ class LambdaExampleTest
     @Order(3)
     public void invokeFunction()
     {
-        unitTestObject.invokeFunction(functionName);
+        String response = unitTestObject.invokeFunction(functionName);
+        System.out.println(response);
 
         System.out.println("\nTest 3");
     }
@@ -74,7 +77,13 @@ class LambdaExampleTest
     public void addTrigger()
     {
         String sourceArn = "arn:aws:sqs:us-east-1:161283720660:testQueue";
-        unitTestObject.addTrigger(functionName, sourceArn, false, 10);
+        String uuid  = unitTestObject.addTrigger(functionName, sourceArn, false, 10);
+
+        DeleteEventSourceMappingRequest deleteEventSourceMappingRequest =
+                DeleteEventSourceMappingRequest.builder()
+                        .uuid(uuid)
+                        .build();
+        lambdaClient.deleteEventSourceMapping(deleteEventSourceMappingRequest);
 
         System.out.println("\nTest 4");
     }

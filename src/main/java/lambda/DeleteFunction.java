@@ -1,6 +1,6 @@
 package lambda;
 
-//Calls Method LambdaExample::deleteFunction()
+//Calls Method LambdaOperations::deleteFunction()
 //Deletes the lambda function
 public class DeleteFunction
 {
@@ -8,13 +8,13 @@ public class DeleteFunction
     {
         try
         {
-            //Initializing testObject by calling another method
-            //which returns reference of an object of class LambdaExample
-            LambdaExample testObject = getNewLambdaExample.newLambdaExample();
+            //Initializing lambdaObject by calling another method
+            //which returns reference of an object of class LambdaOperations
+            LambdaOperations lambdaObject = getNewObject.newLambdaObject();
 
             String functionName = args[0];
 
-            testObject.deleteFunction(functionName);
+            lambdaObject.deleteFunction(functionName);
         }
         catch(Exception e)
         {

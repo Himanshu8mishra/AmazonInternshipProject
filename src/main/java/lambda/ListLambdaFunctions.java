@@ -1,6 +1,6 @@
 package lambda;
 
-//Calls Method LambdaExample::listFunctions()
+//Calls Method LambdaOperations::listFunctions()
 //Prints the list of functions
 public class ListLambdaFunctions
 {
@@ -8,11 +8,11 @@ public class ListLambdaFunctions
     {
         try
         {
-            //Initializing testObject by calling another function
-            //which returns reference of an object of class LambdaExample
-            LambdaExample testObject = getNewLambdaExample.newLambdaExample();
+            //Initializing lambdaObject by calling another function
+            //which returns reference of an object of class LambdaOperations
+            LambdaOperations lambdaObject = getNewObject.newLambdaObject();
 
-            testObject.listFunctions();
+            lambdaObject.listFunctions();
         }
         catch(Exception e)
         {

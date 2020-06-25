@@ -4,19 +4,19 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class TestingMainLambda extends getNewLambdaExample
+public class TestingMainLambda extends getNewObject
 {
     @BeforeAll
     public static void setUp()
     {
         System.out.println("\nInitial Test");
-        instanceLambdaExample = new LambdaExampleMock();
+        lambdaObject = new LambdaOperationsMock();
     }
     @AfterAll
     public static void tearDown()
     {
         System.out.println("\nFinal Test");
-        instanceLambdaExample = null;
+        lambdaObject = null;
     }
     @Test
     public void testingAddTrigger()

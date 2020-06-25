@@ -3,7 +3,7 @@ package lambda;
 import software.amazon.awssdk.services.lambda.model.*;
 
 //Mock class of lambda example
-public class LambdaExampleMock extends LambdaExample
+public class LambdaOperationsMock extends LambdaOperations
 {
     @Override
     public FunctionCode getFunctionCode(String bucketName, String key)
@@ -24,9 +24,10 @@ public class LambdaExampleMock extends LambdaExample
         return "dummyResponse";
     }
     @Override
-    public void addTrigger(String functionName, String sourceArn, boolean enableTrigger, int batchSize)
+    public String addTrigger(String functionName, String sourceArn, boolean enableTrigger, int batchSize)
     {
         System.out.println("Inside addTrigger");
+        return "dummyUUID";
     }
     @Override
     public void listFunctions()

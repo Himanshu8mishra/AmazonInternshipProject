@@ -1,6 +1,6 @@
 package lambda;
 
-//Calls Method LambdaExample::invokeFunction()
+//Calls Method LambdaOperations::invokeFunction()
 //Invokes the lambda function
 public class InvokeFunction
 {
@@ -8,13 +8,13 @@ public class InvokeFunction
     {
         try
         {
-            //Initializing testObject by calling another function
-            //which returns reference of an object of class LambdaExample
-            LambdaExample testObject = getNewLambdaExample.newLambdaExample();
+            //Initializing lambdaObject by calling another function
+            //which returns reference of an object of class LambdaOperations
+            LambdaOperations lambdaObject = getNewObject.newLambdaObject();
 
             String functionName = args[0];
 
-            String response = testObject.invokeFunction(functionName);
+            String response = lambdaObject.invokeFunction(functionName);
             System.out.println(response);
         }
         catch(Exception e)
