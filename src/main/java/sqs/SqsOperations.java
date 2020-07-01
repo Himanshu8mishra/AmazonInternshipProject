@@ -8,6 +8,8 @@ import software.amazon.awssdk.services.sqs.model.DeleteQueueResponse;
 import software.amazon.awssdk.services.sqs.model.GetQueueUrlRequest;
 import software.amazon.awssdk.services.sqs.model.GetQueueUrlResponse;
 import software.amazon.awssdk.services.sqs.model.QueueAttributeName;
+import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
+import software.amazon.awssdk.services.sqs.model.SendMessageResponse;
 import software.amazon.awssdk.services.sqs.model.SetQueueAttributesRequest;
 import software.amazon.awssdk.services.sqs.model.SetQueueAttributesResponse;
 
@@ -80,6 +82,28 @@ public class SqsOperations
         SetQueueAttributesResponse setQueueAttributesResponse = sqsClient.setQueueAttributes(setQueueAttributesRequest);
 
         return setQueueAttributesResponse.toString();
+    }
+
+    /**
+     * @param queueName Name of the queue to which message is being sent
+     * @param message Message that is to be sent
+     * @param messageGroupID Group ID of the message used to maintain order of messages in Fifo queues
+     * @return ID of message sent
+     */
+    public String sendMessage(String queueName, String message, String messageGroupID)
+    {
+        String queueUrl = getQueueUrl(queueName);
+
+        System.out.println("\nSending Message: "+message);
+
+        SendMessageRequest sendMsgRequest = SendMessageRequest.builder()
+                .queueUrl(queueUrl)
+                .messageBody(message)
+                .messageGroupId(messageGroupID)
+                .build();
+        SendMessageResponse sendMessageResponse = sqsClient.sendMessage(sendMsgRequest);
+
+        return sendMessageResponse.messageId();
     }
 
     /**

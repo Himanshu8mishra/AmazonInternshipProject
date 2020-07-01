@@ -56,9 +56,18 @@ class testingSqsOperations
         String response = unitTestObject.configureQueue(queueName, visibilityTimeout, pollTime);
         assertNotNull(response);
     }
-
     @Test
     @Order(3)
+    public void testingSendMessage()
+    {
+        String message = "testMessage";
+        String messageGroupID = "testGroup";
+        String response = unitTestObject.sendMessage(queueName,message,messageGroupID);
+        assertNotNull(response);
+    }
+
+    @Test
+    @Order(4)
     public void testingDeleteQueue()
     {
         String response = unitTestObject.deleteQueue(queueName);
