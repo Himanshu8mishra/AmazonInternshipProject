@@ -1,11 +1,18 @@
 package lambda;
 
-import software.amazon.awssdk.core.SdkBytes;
 import software.amazon.awssdk.services.lambda.LambdaClient;
-import software.amazon.awssdk.services.lambda.model.*;
-import java.util.*;
+import software.amazon.awssdk.services.lambda.model.CreateEventSourceMappingRequest;
+import software.amazon.awssdk.services.lambda.model.CreateEventSourceMappingResponse;
+import software.amazon.awssdk.services.lambda.model.CreateFunctionRequest;
+import software.amazon.awssdk.services.lambda.model.CreateFunctionResponse;
+import software.amazon.awssdk.services.lambda.model.DeleteFunctionRequest;
+import software.amazon.awssdk.services.lambda.model.DeleteFunctionResponse;
+import software.amazon.awssdk.services.lambda.model.FunctionCode;
 
-//Contains methods for all the basic operations related to AWS Lambda
+/**
+ * Contains methods for all the basic operations related to AWS Lambda
+ * @author Himanshu Mishra
+ */
 public class LambdaOperations
 {
     private static LambdaClient lambdaClient;
@@ -15,7 +22,11 @@ public class LambdaOperations
         lambdaClient = LambdaClient.builder().build();
     }
 
-    //Returns a reference of your deployment package stored in s3 bucket
+    /**
+     * @param bucketName Name of the bucket which stores your deployment package
+     * @param key Key of your package
+     * @return Returns a reference of your deployment package stored in s3 bucket
+     */
     public FunctionCode getFunctionCode(String bucketName, String key)
     {
         return FunctionCode.builder()
@@ -24,59 +35,40 @@ public class LambdaOperations
                 .build();
     }
 
-    public void createFunction(String functionName, String handler, String runtime,
-                                      String role, FunctionCode functionCode)
+    /**
+     * @param functionName Name of the function to be created
+     * @param handler Name of the method that will be invoked by lambda
+     *               (Syntax - package.className::methodName)
+     * @param runtime Environment on which your package runs (like java11)
+     * @param roleArn ARN of the IAM role
+     * @param functionCode Reference of package stored in s3 bucket
+     * @return Name of the function created
+     */
+    public String createFunction(String functionName, String handler, String runtime,
+                                      String roleArn, FunctionCode functionCode)
     {
-        System.out.println("\nCreating Function: "+functionName);
+        System.out.println("\nCreating Function: " + functionName);
 
         CreateFunctionRequest createFunctionRequest = CreateFunctionRequest.builder()
                 .functionName(functionName)
                 .handler(handler)
                 .runtime(runtime)
-                .role(role)
+                .role(roleArn)
                 .code(functionCode)
                 .build();
-        lambdaClient.createFunction(createFunctionRequest);
+        CreateFunctionResponse createFunctionResponse = lambdaClient.createFunction(createFunctionRequest);
 
-        System.out.println("Function Created");
+        return createFunctionResponse.functionName();
     }
 
-    public String invokeFunction(String functionName)
-    {
-        System.out.println("\nInvoking Function: "+functionName);
-
-        SdkBytes payload = SdkBytes.fromUtf8String
-            ("{\n"+
-            "\"Records\": [\n"+
-            "{\n"+
-            "\"messageId\": \"19dd0b57-b21e-4ac1-bd88-01bbb068cb78\",\n"+
-            "\"receiptHandle\": \"MessageReceiptHandle\",\n"+
-            "\"body\": \"{ \\\"IP\\\":\\\"34.207.64.196\\\",\\\"port\\\":\\\"80\\\",\\\"message\\\":\\\"testMessage\\\",\\\"count\\\":\\\"99\\\"}\",\n"+
-            "\"attributes\": {\n"+
-            "\"ApproximateReceiveCount\": \"1\",\n"+
-            "\"SentTimestamp\": \"1523232000000\",\n"+
-            "\"SenderId\": \"123456789012\",\n"+
-            "\"ApproximateFirstReceiveTimestamp\": \"1523232000001\"\n"+
-            "},\n"+
-            "\"messageAttributes\": {},\n"+
-            "\"md5OfBody\": \"7b270e59b47ff90a553787216d55d91d\",\n"+ "\"eventSource\": \"aws:sqs\",\n"+
-            "\"eventSourceARN\": \"arn:aws:sqs:us-west-2:123456789012:MyQueue\",\n"+
-            "\"awsRegion\": \"us-west-1\"\n"+
-            "}\n"+
-            "]\n"+
-            "}");
-
-        InvokeRequest invokeRequest = InvokeRequest.builder()
-                .functionName(functionName)
-                .payload(payload)
-                .build();
-
-        InvokeResponse response = lambdaClient.invoke(invokeRequest);
-
-        return (response.payload().asUtf8String());
-    }
-
-    public String addTrigger(String functionName, String sourceArn, boolean enableTrigger, int batchSize)
+    /**
+     * @param functionName Name of the function
+     * @param sourceArn ARN of trigger
+     * @param enableTrigger To enable the trigger
+     * @param messagePollingLimit Max messages that can be polled in one go
+     * @return UUID of the event source mapping
+     */
+    public String addTrigger(String functionName, String sourceArn, boolean enableTrigger, int messagePollingLimit)
     {
         System.out.println("\nAdding Trigger");
 
@@ -85,7 +77,7 @@ public class LambdaOperations
                         .functionName(functionName)
                         .eventSourceArn(sourceArn)
                         .enabled(enableTrigger)
-                        .batchSize(batchSize)
+                        .batchSize(messagePollingLimit)
                         .build();
 
         CreateEventSourceMappingResponse createEventSourceMappingResponse =
@@ -95,29 +87,19 @@ public class LambdaOperations
         return (createEventSourceMappingResponse.uuid());
     }
 
-    public void listFunctions()
+    /**
+     * @param functionName Name of the function to be deleted
+     * @return Response received from AWS
+     */
+    public String deleteFunction(String functionName)
     {
-        System.out.println("\nFunction List:");
-
-        ListFunctionsResponse listFunctionsResponse = lambdaClient.listFunctions();
-
-        List<FunctionConfiguration> list = listFunctionsResponse.functions();
-
-        for (FunctionConfiguration iterator : list)
-        {
-            System.out.println(iterator.functionName());
-        }
-    }
-
-    public void deleteFunction(String functionName)
-    {
-        System.out.println("\nDeleting Function: "+functionName);
+        System.out.println("\nDeleting Function: " + functionName);
 
         DeleteFunctionRequest deleteFunctionRequest = DeleteFunctionRequest.builder()
                 .functionName(functionName)
                 .build();
-        lambdaClient.deleteFunction(deleteFunctionRequest);
+        DeleteFunctionResponse deleteFunctionResponse = lambdaClient.deleteFunction(deleteFunctionRequest);
 
-        System.out.println("Function Deleted");
+        return deleteFunctionResponse.toString();
     }
 }
