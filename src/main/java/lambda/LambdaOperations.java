@@ -6,7 +6,6 @@ import software.amazon.awssdk.services.lambda.model.CreateEventSourceMappingResp
 import software.amazon.awssdk.services.lambda.model.CreateFunctionRequest;
 import software.amazon.awssdk.services.lambda.model.CreateFunctionResponse;
 import software.amazon.awssdk.services.lambda.model.DeleteFunctionRequest;
-import software.amazon.awssdk.services.lambda.model.DeleteFunctionResponse;
 import software.amazon.awssdk.services.lambda.model.FunctionCode;
 
 /**
@@ -23,9 +22,11 @@ public class LambdaOperations
     }
 
     /**
+     * Creates a reference for an object with details regarding
+     * deployment package to be uploaded in lambda function
      * @param bucketName Name of the bucket which stores your deployment package
-     * @param key Key of your package
-     * @return Returns a reference of your deployment package stored in s3 bucket
+     * @param key S3 key of your package file
+     * @return Returns a reference of your deployment package for lambda function stored in s3 bucket
      */
     public FunctionCode getFunctionCode(String bucketName, String key)
     {
@@ -36,11 +37,12 @@ public class LambdaOperations
     }
 
     /**
+     * Creates a lambda function in AWS
      * @param functionName Name of the function to be created
      * @param handler Name of the method that will be invoked by lambda
      *               (Syntax - package.className::methodName)
      * @param runtime Environment on which your package runs (like java11)
-     * @param roleArn ARN of the IAM role
+     * @param roleArn ARN of the IAM role to be attached to your function
      * @param functionCode Reference of package stored in s3 bucket
      * @return Name of the function created
      */
@@ -62,9 +64,10 @@ public class LambdaOperations
     }
 
     /**
+     * Adds event source to the specified function
      * @param functionName Name of the function
      * @param sourceArn ARN of trigger
-     * @param enableTrigger To enable the trigger
+     * @param enableTrigger To enable the trigger straight away or not (you can enable it later as well)
      * @param messagePollingLimit Max messages that can be polled in one go
      * @return UUID of the event source mapping
      */
@@ -88,18 +91,18 @@ public class LambdaOperations
     }
 
     /**
+     * Deletes the specified function
      * @param functionName Name of the function to be deleted
-     * @return Response received from AWS
      */
-    public String deleteFunction(String functionName)
+    public void deleteFunction(String functionName)
     {
         System.out.println("\nDeleting Function: " + functionName);
 
         DeleteFunctionRequest deleteFunctionRequest = DeleteFunctionRequest.builder()
                 .functionName(functionName)
                 .build();
-        DeleteFunctionResponse deleteFunctionResponse = lambdaClient.deleteFunction(deleteFunctionRequest);
+        lambdaClient.deleteFunction(deleteFunctionRequest);
 
-        return deleteFunctionResponse.toString();
+        System.out.println(functionName + " deleted");
     }
 }

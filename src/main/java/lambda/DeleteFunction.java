@@ -1,15 +1,16 @@
 package lambda;
 
 /**
- * Calls Method LambdaOperations::deleteFunction()
  * Deletes the lambda function
  * @author Himanshu Mishra
  */
 public class DeleteFunction
 {
     /**
+     * Calls Method LambdaOperations::deleteFunction()
      * @param args
-     * Required variables: functionName
+     * Required variables:
+     * functionName - Name of the function to be deleted
      */
     public static void main(String[] args)
     {
@@ -19,8 +20,7 @@ public class DeleteFunction
 
             String functionName = args[0];
 
-            String response = lambdaObject.deleteFunction(functionName);
-            System.out.println(response + "\n" + functionName + " deleted");
+            lambdaObject.deleteFunction(functionName);
         }
         catch(Exception e)
         {

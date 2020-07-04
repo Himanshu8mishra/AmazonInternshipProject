@@ -6,15 +6,17 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * Calls Method LambdaOperations::createFunction()
  * Creates new lambda function
  * @author Himanshu Mishra
  */
 public class CreateFunction
 {
     /**
+     *
+     * Calls Method LambdaOperations::createFunction()
      * @param args
-     * Required variables: functionName
+     * Required variables:
+     * functionName - Name of the function to be created
      */
     public static void main(String[] args)
     {
@@ -24,6 +26,7 @@ public class CreateFunction
 
             String functionName = args[0];
 
+            //Loading data from Lambda Config file
             InputStream input =
                     CreateFunction.class.getClassLoader().getResourceAsStream("LambdaConfig.properties");
 
@@ -37,9 +40,9 @@ public class CreateFunction
             String s3key = prop.getProperty("s3key");
 
             //Getting reference for the deployment package stored in s3 bucket
-            FunctionCode functionCode = lambdaObject.getFunctionCode(bucketName,s3key);
+            FunctionCode functionCode = lambdaObject.getFunctionCode(bucketName, s3key);
 
-            String response = lambdaObject.createFunction(functionName,handler,runtime,roleArn,functionCode);
+            String response = lambdaObject.createFunction(functionName, handler, runtime, roleArn, functionCode);
             System.out.println(response + " created");
         }
         catch(Exception e)

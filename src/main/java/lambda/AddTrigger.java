@@ -4,15 +4,16 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * Calls Method LambdaOperations::addTrigger()
  * Specifies event source for the lambda function
  * @author Himanshu Mishra
  */
 public class AddTrigger
 {
     /**
+     * Calls Method LambdaOperations::addTrigger()
      * @param args
-     * Required variables: functionName
+     * Required variables:
+     * functionName - Name of the function for which trigger is being added
      */
     public static void main(String[] args)
     {
@@ -22,6 +23,7 @@ public class AddTrigger
 
             String functionName = args[0];
 
+            //Loading data from LambdaConfig file
             InputStream input =
                     CreateFunction.class.getClassLoader().getResourceAsStream("LambdaConfig.properties");
 
@@ -34,11 +36,11 @@ public class AddTrigger
 
             if(messagePollingLimit < 0 || messagePollingLimit > 10)
             {
-                System.out.println("Message Polling Limit is between 1 to 10 (both values included)");
+                System.out.println("Message Polling Limit should be between 1 to 10 (both values included)");
                 return;
             }
-            
-            String uuid = lambdaObject.addTrigger(functionName,sourceArn,enableTrigger,messagePollingLimit);
+
+            String uuid = lambdaObject.addTrigger(functionName, sourceArn, enableTrigger, messagePollingLimit);
             System.out.println(uuid);
         }
         catch(Exception e)
