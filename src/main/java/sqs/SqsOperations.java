@@ -4,14 +4,12 @@ import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.CreateQueueRequest;
 import software.amazon.awssdk.services.sqs.model.CreateQueueResponse;
 import software.amazon.awssdk.services.sqs.model.DeleteQueueRequest;
-import software.amazon.awssdk.services.sqs.model.DeleteQueueResponse;
 import software.amazon.awssdk.services.sqs.model.GetQueueUrlRequest;
 import software.amazon.awssdk.services.sqs.model.GetQueueUrlResponse;
 import software.amazon.awssdk.services.sqs.model.QueueAttributeName;
 import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
 import software.amazon.awssdk.services.sqs.model.SendMessageResponse;
 import software.amazon.awssdk.services.sqs.model.SetQueueAttributesRequest;
-import software.amazon.awssdk.services.sqs.model.SetQueueAttributesResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +36,7 @@ public class SqsOperations
     }
 
     /**
+     * Creates a Fifo queue in AWS
      * @param queueName Name of the queue to be created
      * @return URL of the queue created
      */
@@ -60,12 +59,12 @@ public class SqsOperations
     }
 
     /**
+     * Configures value of visibility timeout and polling time of the queue
      * @param queueName Name of the queue to be configured
      * @param visibilityTimeout Time for which messages will be invisible after being fetched
      * @param pollTime Time limit over which queue should respond to the consumer
-     * @return Response received from AWS
      */
-    public String configureQueue(String queueName, String visibilityTimeout, String pollTime)
+    public void configureQueue(String queueName, String visibilityTimeout, String pollTime)
     {
         String queueUrl = getQueueUrl(queueName);
 
@@ -79,12 +78,13 @@ public class SqsOperations
                 .queueUrl(queueUrl)
                 .attributes(attributes)
                 .build();
-        SetQueueAttributesResponse setQueueAttributesResponse = sqsClient.setQueueAttributes(setQueueAttributesRequest);
+        sqsClient.setQueueAttributes(setQueueAttributesRequest);
 
-        return setQueueAttributesResponse.toString();
+        System.out.println(queueName + " configured");
     }
 
     /**
+     * Sends message to AWS SQS
      * @param queueName Name of the queue to which message is being sent
      * @param message Message that is to be sent
      * @param messageGroupID Group ID of the message used to maintain order of messages in Fifo queues
@@ -96,21 +96,21 @@ public class SqsOperations
 
         System.out.println("\nSending Message: "+message);
 
-        SendMessageRequest sendMsgRequest = SendMessageRequest.builder()
+        SendMessageRequest sendMessageRequest = SendMessageRequest.builder()
                 .queueUrl(queueUrl)
                 .messageBody(message)
                 .messageGroupId(messageGroupID)
                 .build();
-        SendMessageResponse sendMessageResponse = sqsClient.sendMessage(sendMsgRequest);
+        SendMessageResponse sendMessageResponse = sqsClient.sendMessage(sendMessageRequest);
 
         return sendMessageResponse.messageId();
     }
 
     /**
+     * Deleted the specified queue from AWS
      * @param queueName Name of the queue to be deleted
-     * @return Response received from AWS
      */
-    public String deleteQueue(String queueName)
+    public void deleteQueue(String queueName)
     {
         String queueUrl = getQueueUrl(queueName);
 
@@ -119,8 +119,8 @@ public class SqsOperations
         DeleteQueueRequest deleteQueueRequest = DeleteQueueRequest.builder()
                 .queueUrl(queueUrl)
                 .build();
-        DeleteQueueResponse deleteQueueResponse = sqsClient.deleteQueue(deleteQueueRequest);
+        sqsClient.deleteQueue(deleteQueueRequest);
 
-        return deleteQueueResponse.toString();
+        System.out.println(queueName + " deleted");
     }
 }

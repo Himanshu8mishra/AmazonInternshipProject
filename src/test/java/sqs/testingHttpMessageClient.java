@@ -1,8 +1,6 @@
 package sqs;
 
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -13,13 +11,14 @@ import static org.mockito.Mockito.when;
  * this test by sending a Http request on http://localhost:8080/
  * Request body must be in json format and
  * should contain 'count' key with any integer as its value
+ * @author Himanshu Mishra
  */
 class testingHttpMessageClient
 {
     @Test
     void testingMessageProducer()
     {
-        String queueName = "testQueue";
+        String queueName = "queue.fifo";
         String message = "testMessage";
         String messageGroupID = "testGroup";
 
@@ -28,8 +27,6 @@ class testingHttpMessageClient
 
         HttpMessageClient httpMessageClient =
                 new HttpMessageClient(sqsObject, queueName, message, messageGroupID,1);
-        String response = httpMessageClient.messageProducer();
-
-        assertEquals("Completed",response);
+        httpMessageClient.messageProducer();
     }
 }

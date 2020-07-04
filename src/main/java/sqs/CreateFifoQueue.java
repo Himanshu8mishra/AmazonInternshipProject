@@ -1,15 +1,16 @@
 package sqs;
 
 /**
- * Calls Method SqsOperations::createFifoQueue()
  * Creates new FIFO queue
  * @author Himanshu Mishra
  */
 public class CreateFifoQueue
 {
     /**
+     * Calls Method SqsOperations::createFifoQueue()
      * @param args
-     * Required variables: queueName
+     * Required variables:
+     * queueName - Name of the queue to be created
      */
     public static void main(String[] args)
     {

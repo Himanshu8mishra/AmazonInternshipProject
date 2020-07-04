@@ -22,11 +22,12 @@ public class HttpMessageClient
     private final String message;
     private final String messageGroupID;
     private String IP;
-    private int numberOfMessages;
+    private final int numberOfMessages;
 
     /**
+     * Initializes all the local variables
      * @param sqsObject Object of class SqsOperations
-     * @param queueName Name of the queue to send messages
+     * @param queueName Name of the queue to which messages will be sent
      * @param message Original message that should be delivered
      * @param messageGroupID Group ID of the message to maintain sequence of messages
      * @param numberOfMessages Total messages that will be sent and received
@@ -43,6 +44,9 @@ public class HttpMessageClient
         this.numberOfMessages = numberOfMessages;
     }
 
+    /**
+     * Fetches IP address of the server which runs this program
+     */
     private void setIPAddress() throws Exception
     {
         URL url_name = new URL("http://bot.whatismyipaddress.com");
@@ -53,6 +57,10 @@ public class HttpMessageClient
         this.IP = sc.readLine().trim();
     }
 
+    /**
+     * Creates a json message for sending it to the queue
+     * @return json string of the message created
+     */
     private String getJsonMessage()
     {
         JSONObject jsonObject = new JSONObject();
@@ -69,7 +77,7 @@ public class HttpMessageClient
      * Sends messages to the SQS queue and
      * listens for response from Lambda function using socket server
      */
-    public String messageProducer()
+    public void messageProducer()
     {
         try
         {
@@ -135,6 +143,5 @@ public class HttpMessageClient
         {
             System.out.println("\nError Occurred\n" + e);
         }
-        return "Completed";
     }
 }

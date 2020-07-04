@@ -1,15 +1,16 @@
 package sqs;
 
 /**
- * Calls Method SqsOperations::deleteQueue()
  * Deletes the specified queue
  * @author Himanshu Mishra
  */
 public class DeleteQueue
 {
     /**
+     * Calls Method SqsOperations::deleteQueue()
      * @param args
-     * Required variables: queueName
+     * Required variables:
+     * queueName - Name of the queue to be deleted
      */
     public static void main(String[] args)
     {
@@ -19,8 +20,7 @@ public class DeleteQueue
 
             String queueName = args[0];
 
-            String response = sqsObject.deleteQueue(queueName);
-            System.out.println(response + "\n" + queueName + " deleted");
+            sqsObject.deleteQueue(queueName);
         }
         catch (Exception e)
         {
