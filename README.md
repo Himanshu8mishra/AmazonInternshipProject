@@ -9,51 +9,38 @@ With Lambda as a target for SQS event source, it fully supports reading and dele
 
 - **SQS Package**
 
-**SQSOperations.java -** Contains method performing basic operations related to SQS
+**SqsOperations.java -** Contains method performing basic operations related to SQS
 ```java
-public void createStandardQueue(String queueName)
-public void listQueues()
+public void createFifoQueue(String queueName)
 public void configureQueue(String queueName, String visibilityTimeout, String pollTime)
-public void sendMessage(String queueName, String message)
-public void receiveMessage(String queueName, int maxMessages, int waitTime)
-public void purgeQueue(String queueName)
+public void sendMessage(String queueName, String message, String messageGroupID)
 public void deleteQueue(String queueName)
 ```
 
-**Create_Standard_Queue.java -** calls method *SQSOperations::createStandardQueue()*
+**CreateFifoQueue.java -** calls method *SqsOperations::createFifoQueue()*
 
 It takes following variables as command line arguments: ```queueName```
 
-**List_Queues.java -** calls method *SQSOperations::listQueues()*
-
-**Configure_Queue.java -** calls method *SQSOperations::configureQueue()*
+**ConfigureQueue.java -** calls method *SqsOperations::configureQueue()*
 
 It takes following variables as command line arguments: ```queueName, visibilityTimeout, pollTime```
 
-**Send_Message.java -** calls method *SQSOperations::sendMessage()*
-
-It takes following variables as command line arguments: ```queueName, message```
-
-**Receive_Messages.java -** calls method *SQSOperations::receiveMessage()*
-
-It takes following variables as command line arguments: ```queueName, maxMessages, waitTime```
-
-**Purge_Queue.java -** calls method *SQSOperations::purgeQueue()*
+**DeleteQueue.java -** calls method *SqsOperations::deleteQueue()*
 
 It takes following variables as command line arguments: ```queueName```
 
-**Delete_Queue.java -** calls method *SQSOperations::deleteQueue()*
+**HttpMessageClient.java -** Contains method which produces messages and send it to AWS SQS and listens for response from AWS Lambda on a specific port and increases message count after each cycle.  
+By default number of cycles/messages are set to 1000 in config file.
+ 
+```
+Constructor:
+HttpMessageClient(SqsOperations sqsObject, String queueName, String message, String messageGroupID, int numberOfMessages)
 
-It takes following variables as command line arguments: ```queueName```
-
-**getNewObject.java** Contains methods that return objects of different classes and while testing returns object of mock classes
-```java
-static SQSOperations newSqsObject()
+public void messageProducer()
 ```
 
-## Setup
+**InitiateHttpClient.java -** calls method *HttpMessageClient::messageProducer()*
 
-1. Clone or download project files in your local machine.
-2. Open your project in your preferred editor (recommended Intellij) as a maven project. You can search online for exact procedure according to your editor.
-3. Build your project using following command ```mvn package```. For more details [click here](https://maven.apache.org/users/index.html "click here")
-4. Make sure to update your aws credential files.  [Click Here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html "Click Here") You can do that from your editor as well if you have installed AWS toolkit for your editor.
+It takes following variables as command line arguments: ```queueName, message, messageGroupID```
+Takes following input from config file: ```numberOfMessages```
+
