@@ -7,6 +7,44 @@ With Lambda as a target for SQS event source, it fully supports reading and dele
 
 ### Files Description
 
+- **SQS Package**
+
+**SqsOperations.java -** Contains method performing basic operations related to SQS
+```java
+public void createFifoQueue(String queueName)
+public void configureQueue(String queueName, String visibilityTimeout, String pollTime)
+public void sendMessage(String queueName, String message, String messageGroupID)
+public void deleteQueue(String queueName)
+```
+
+**CreateFifoQueue.java -** calls method *SqsOperations::createFifoQueue()*
+
+It takes following variables as command line arguments: ```queueName```
+
+**ConfigureQueue.java -** calls method *SqsOperations::configureQueue()*
+
+It takes following variables as command line arguments: ```queueName, visibilityTimeout, pollTime```
+
+**DeleteQueue.java -** calls method *SqsOperations::deleteQueue()*
+
+It takes following variables as command line arguments: ```queueName```
+
+**HttpMessageClient.java -** Contains method which produces messages and send it to AWS SQS and listens for response from AWS Lambda on a specific port and increases message count after each cycle.  
+By default number of cycles/messages are set to 1000 in config file.
+ 
+```
+Constructor:
+HttpMessageClient(SqsOperations sqsObject, String queueName, String message, String messageGroupID, int numberOfMessages)
+
+public void messageProducer()
+```
+
+**InitiateHttpClient.java -** calls method *HttpMessageClient::messageProducer()*
+
+It takes following variables as command line arguments: ```queueName, message, messageGroupID```
+Takes following input from config file: ```numberOfMessages```
+
+=======
 - **Lambda Package**
 
 **LambdaOperations.java -** Contains method performing basic operations related to SQS
@@ -41,3 +79,4 @@ It takes following variables as command line arguments: ```functionName```
 6. Go into package directory where you will have an executable .jar file which contains all class files.
 7. Make sure you transferred entire package to your EC2 instance because it conatins .jar files of your dependencies as well.
 8. After you have installed java in your EC2 instance run programs using following command: ``` java -cp <jar_filename.jar> <package.class_name> <command_line_arguments>```
+
