@@ -41,7 +41,7 @@ public void messageProducer()
 
 **InitiateHttpClient.java -** calls method *HttpMessageClient::messageProducer()*
 
-It takes following variables as command line arguments: ```queueName, message, messageGroupID```
+It takes following variables as command line arguments: ```queueName, message, messageGroupID```   
 Takes following input from config file: ```numberOfMessages```
 
 =======
@@ -82,12 +82,12 @@ It takes following variables as command line arguments: ```functionName```
 8. Make sure you have transferred entire package to your EC2 instance because it conatins .jar files of your dependencies as well.
 9. After you have installed java in your EC2 instance run programs using following command: ``` java -cp <jar_filename.jar> <package.class_name> <command_line_arguments>```
 
-##Working
+## Working
 
-####1. Creating Fifo queue:
+#### 1. Creating Fifo queue:  
 ```java -cp amznProject-1.0.jar sqs.CreateFifoQueue FifoQueue.fifo```
 
-####2. Creating Lambda Function
+#### 2. Creating Lambda Function  
 **Note:**  
 You have to upload .jar file containing code for your lambda function in a S3 bucket.  
 You can find the required jar file in src/main/resources directory (DeployPackage-1.0-SNAPSHOT.jar).  
@@ -95,11 +95,11 @@ Update LambdaConfig.properties file in src/main/resources directory with ARN val
      
 ```java -cp amznProject-1.0.jar lambda.CreateFunction testFunction```
 
-####3. Adding Fifo queue as an event trigger
+#### 3. Adding Fifo queue as an event trigger  
 **Note:** Update your LambdaConfig.properties files according to your resources ARN values  
 ```java -cp amznProject-1.0.jar lambda.AddTrigger testFunction```
 
-####Run your setup:
+#### Run your setup:  
 ```java -cp amznProject-1.0.jar sqs.InitiateHttpClient FifoQueue.fifo testMessage group1```
 
 By default 1000 messages will be sent to the queue but you can change it in SqsConfig.properties file.
