@@ -73,10 +73,33 @@ It takes following variables as command line arguments: ```functionName```
 
 1. Clone or download project files in your local machine.
 2. Open your project in your preferred editor (recommended Intellij) as a maven project. You can search online for exact procedure according to your editor.
-3. Build your project using following command ```mvn package```. For more details [click here](https://maven.apache.org/users/index.html "click here")
-4. Make sure to update your aws credential files.  [Click Here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html "Click Here") You can do that from your editor as well if you have installed AWS toolkit for your editor.
-5. To run these programs on your EC2 server transfer your package created by maven to your EC2 instance.
-6. Go into package directory where you will have an executable .jar file which contains all class files.
-7. Make sure you transferred entire package to your EC2 instance because it conatins .jar files of your dependencies as well.
-8. After you have installed java in your EC2 instance run programs using following command: ``` java -cp <jar_filename.jar> <package.class_name> <command_line_arguments>```
+3. Open command prompt and go to directory of your project.
+4. Build your project using following command ```mvn package```. For more details [click here](https://maven.apache.org/users/index.html "click here")
+5. Make sure to update your aws credential files.  [Click Here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html "Click Here") You can do that from your editor as well if you have installed AWS toolkit for your editor.
+6. Connect to your EC2 instance and make sure you attach proper IAM role to your EC2 instance with all the required policies.
+6. To run these programs on your EC2 server transfer your package folder created by maven to your EC2 instance.
+7. Go into package directory where you will have an executable .jar file which contains all class files.
+8. Make sure you have transferred entire package to your EC2 instance because it conatins .jar files of your dependencies as well.
+9. After you have installed java in your EC2 instance run programs using following command: ``` java -cp <jar_filename.jar> <package.class_name> <command_line_arguments>```
 
+##Working
+
+####1. Creating Fifo queue:
+```java -cp amznProject-1.0.jar sqs.CreateFifoQueue FifoQueue.fifo```
+
+####2. Creating Lambda Function
+**Note:**  
+You have to upload .jar file containing code for your lambda function in a S3 bucket.  
+You can find the required jar file in src/main/resources directory (DeployPackage-1.0-SNAPSHOT.jar).  
+Update LambdaConfig.properties file in src/main/resources directory with ARN values of your resources.
+     
+```java -cp amznProject-1.0.jar lambda.CreateFunction testFunction```
+
+####3. Adding Fifo queue as an event trigger
+**Note:** Update your LambdaConfig.properties files according to your resources ARN values  
+```java -cp amznProject-1.0.jar lambda.AddTrigger testFunction```
+
+####Run your setup:
+```java -cp amznProject-1.0.jar sqs.InitiateHttpClient FifoQueue.fifo testMessage group1```
+
+By default 1000 messages will be sent to the queue but you can change it in SqsConfig.properties file.
